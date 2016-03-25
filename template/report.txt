@@ -24,7 +24,7 @@ LibPGEN
 ※文献調査などの場合は、URL、文献名と該当ページ数の範囲を記入して稿して下さい。
 
 
-commit履歴 https://github.com/slankdev/libpgen/commits/develop
+commit履歴 https://github.com/slankdev/libpgen/commits/master
 
 
 
