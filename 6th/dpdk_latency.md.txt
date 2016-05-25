@@ -29,8 +29,7 @@ uint64_t rdtsc()
 linuxカーネルの場合
 ``/sys/devices/system/cpu/cpufreq/policy{CPU番号}/cpuinfo_{cur, max, min}_freq``
 でクロック周波数の現在値、最大値、最小値を知ることができるので、
-これのminとmaxを同じ値にして、ターボブーストを無効化してから実権を行う。
-
+これらの値を設定してクロック周波数が動的に変更されないように設定してから実験を行う。
 
 
 ## 実験環境の準備
@@ -152,18 +151,31 @@ Masterで動作させるDPDKを使用したパケットフォワードプログ�
 
 ## 実験結果
 
-先ほど説明した方法で４つのテストを行った。それぞれの実験結果を以下に示す。
+先ほど説明した方法で４つのテストを行った。
+それぞれ何回ずつか実権を行ってだいたい有意そうな値を以下に示す。
 
-| Index             | 計測場所 |  データプレーン | レイテンシ速度   |
-| ----------------- | -------- | --------------- | ---------------- |
-| Latency Test 1.1  | Master   | [DPDK使用]      | testtest         |
-| Latency Test 1.2  | Master   | [PF_PACKET使用] | description      |
-| Latency Test 2.1  | Slave    | [DPDK使用]      | description      |
-| Latency Test 2.2  | Slave    | [PF_PACKET使用] |     asdfa        |
+| Index             | 計測場所 |  データプレーン | レイテンシ速度           |
+| ----------------- | -------- | --------------- | ------------------------ |
+| Latency Test 1.1  | Master   | [DPDK使用]      | 31-34 [clock/packet]     |
+| Latency Test 1.2  | Master   | [PF_PACKET使用] | 3000-5000 [clock/packet] |
+| Latency Test 2.1  | Slave    | [DPDK使用]      | 3000-6000 [clock/packet] |
+| Latency Test 2.2  | Slave    | [PF_PACKET使用] | 3000-6000 [clock/packet] |
+
+Latency Test 1は1000000回パケットを送受信するのにそこまで時間がかからなかったが、
+Latency Test 2はTest1と比べ、すこし時間がかかった。Slave側のデータプレーンは
+Linux Kernelなため、ある程度パケットをとりきれていない。
+(DPDKのエコーの場合早すぎて、ドロップしている？)
+
+Test2はlinux kernelでパケットの送受信をしていることもあり、DPDKレベルの速度は
+記録できなかった。
 
 
 
 
 ## パケットサイズを大きくした時の結果
+
+## 考察
+
+
 
 
