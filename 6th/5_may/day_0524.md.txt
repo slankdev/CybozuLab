@@ -1,0 +1,66 @@
+
+
+## Mar 24 (Tue) 2016
+
+### 今日の予定
+
+ - 本格的にレイテンシ計測 (2.0h)
+ - Libpgenに追加しようと思っていた昨日を追加する (4.0h)
+ - DPDKアプリケーションの作成の手順をまとめる (1.0h)
+
+時間が余ったりしたら以下もやる
+ - 速度計測まで終わったので今後の予定を決める
+ - C++でDPDKを呼び出すときの方法について情報収集
+
+
+
+### 今日やった内容
+
+ - [x] Libpgenに追加しようと思っていた昨日を追加する (5.0h)
+	 - [x] 不具合修正
+	 - [x] detect_PROTOCOL()関数の追加
+ - [x] 本格的にレイテンシ計測 (2.0h)
+     - 何だかあまりにもDPDKの方が早い数値が出たので、ほんとに
+	   これであっているのか分からない。。
+ - [x] DPDKでのパケット送信方法の情報収集
+       受け取ったパケットを一部変更してリダイレクト、などはうまくいくのだが、
+	   パケットをあらたに生成して送信するのが何だかうまくいかないので、
+	   情報収集を続ける。
+
+
+
+### 次回の予定
+
+ - 今後の予定を決める
+ - C++でDPDKを呼び出すときの方法について情報収集
+ - LibPGENの機能追加
+
+
+
+### 問題点,原因,対策 (それぞれ1,2,3で分けて書く)
+
+ 1. バグフィックスに時間がかかりすぎた
+ 2. デバッグ方法の効率が悪い。今まではsegvはすべてprintfデバッグで何とかしていた
+ 3. 今後はgdbを利用したデバッグに変更。今回ずいぶんgdbと仲良くしたので結構なれた。
+
+ 1. DPDKの純粋なパケット送信のみを行う方法がわからなかった
+ 2. 今のところ原因不明
+ 3. 今後の時間でしらべていく
+
+
+### 感想 (あれば)
+
+進捗はかなり少なかったが、デバッガになれてきたのはよかった。
+始めてwiresharkを触ったときを思い出してワクワクした。
+
+
+### Commits
+
+slankdev/dpdk https://gitbub.com/slankdev/dpdk.git
+
+* be1ffc3 [MODIFY] send_packet application, but I'v not success to send packet with DPDK.
+  https://github.com/slankdev/dpdk/commit/be1ffc35edbb62b401e94dff3c3fa8a5ed9c8333
+* d3f4672 [MODIFY] application to calc latency-diff on PF_PACKET and DPDK
+  https://github.com/slankdev/dpdk/commit/d3f467220633b76a68424c8ecba096293f1657ed
+
+
