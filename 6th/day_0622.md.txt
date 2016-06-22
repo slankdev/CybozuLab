@@ -82,6 +82,7 @@
 
  - 開発方針とかまとめてある
    http://www.slideshare.net/lagopus/dpdk-41685894
+   http://elinux.org/images/8/80/Introduction_to_Intel_DPDK_v2.pdf
 
 
 ### 昨日の光成さんとの会議まとめ
