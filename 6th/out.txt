@@ -1,0 +1,115 @@
+
+
+
+[サイボウズ・ラボユース日時報告書]
+---------------------------------------------------------------------------
+勤務日：2017年 1月20日金曜日
+報告者：城倉弘樹
+---------------------------------------------------------------------------
+■ 開発プロジェクト名
+ slankdev/stcp.git
+
+
+■ 今日の目標
+
+ - 速度計測 6h
+
+おそらく実装に穴があるので、
+その辺を修正しながらの計測になる予定
+
+
+■ 作業実績 (実際にかかった時間を書いてください)
+
+ - 12:00-15:30 サンプルの修正など
+ - 15:30-17:00 いくつかのパターンに対して簡単にテスト -> 傾向をなんとなく理解
+ - 17:00-18:00 明日の発表資料作成
+
+
+■ 知見
+
+ - アクセスの量とスレッドのレイテンシから最適な設定パターンが求められそう
+   こんな感じに f(burst\_size, worker\_latency, nic\_latency, num\_cpus, num\_ports)
+
+ - パケット処理を行うスレッドを動かすコアを増やすことでフォワーディングの
+   スループットは リニアにスケールしてそうです。
+
+ - burst数に関しては32でもっとも高性能になり、
+   それより大きくても小さくてもだんだんと性能が落ちていきます。
+
+
+■ 達成度
+
+90%
+
+ - 本格的に計測をしてメモるのは自宅で行うことにした。 -> 単純作業なので、つかれててもできる
+
+ - 現状まだどこに余裕があって、どこに余裕がないのか不明
+   -> これは調べればすぐに分かる
+
+ - 10GbEの基本的パケットフォワードではスペックを持て余している。。(すごい)
+   -> パケット処理スレッドでdelay()を入れて実際に経路検索などを
+      していることを想定してパフォーマンス計測できる
+
+ - 複数のコアで役割を分担させることでパフォーマンス
+   どこがボトルネックか簡単に分かるし、いろいろコアの割り当てパターン
+   もあるしもう少し奥が深くできそう
+
+ - 実験に使用しているアプリケーションは完成度があまり高くないので、
+   今後考えながらよくしていく
+
+ - こういう実験めちゃくちゃ楽しい
+
+ - 動かしている時のNICが目玉焼きができそうなくらいに熱かった。
+   ヒートシンクの上で料理できそう
+
+ - 100G-NICが、それぞれ(burst受信時のレイテンシ, queueごとの処理のレイテンシなどが)
+   どの程度の性能が出るかがわかれば、NICがなくてもアプリケーションがかける。
+
+
+■ 問題点,原因,対策 (それぞれ1,2,3で分けて書く)
+
+ - 任意の1ポートに対して複数のコアで監視すると固まってしまう。
+   このような作業ができると思っていたが、DPDKでは出来いみたいだった。
+   複数のコアを1portに割り当てたい場合はmulti queueを有効にして
+   各queueを監視する方法はできそうな感じがするので、次回以降に
+   取り組んでいきたい
+
+
+
+■ 明日以降の予定
+
+ - std::threadっぽくCPUにバインドさせる関数を指定したい。 -> それをする
+ - 光成さんに教えてもらった構造体の表示関数生成の作業をする
+ - multi queueの使い方についての情報収集
+
+
+
+■ 作業リポジトリ履歴
+
+slankdev/libslankdev.git
+ - [FIX] bug
+   http://github.com/slankdev/libslankdev/commit/e9b5929203b27ef8d9c53cdf842439e849d9c68b
+ - [ADD] test pattern
+   http://github.com/slankdev/libslankdev/commit/2b1c318689ecfc5791c36bd7f0fbb440c27376d3
+ - [ADD] file
+   http://github.com/slankdev/libslankdev/commit/c94f76925b234dfb647de4c665919d37c2d8d65e
+ - [ADD] test pattern
+   http://github.com/slankdev/libslankdev/commit/ef049d16f6bbca73c9218eff1aa618aab826fd90
+ - [REFACT]
+   http://github.com/slankdev/libslankdev/commit/51f6d048c9520c649636570a7f8ff91da1fd2542
+ - [ADD] parameter bulk_size
+   http://github.com/slankdev/libslankdev/commit/ccffe2b0e060190fde0f1b12af6a29548db3351e
+ - [ADD] system delay function
+   http://github.com/slankdev/libslankdev/commit/6e21d760ca6c45a46eb44dfbf7324e100a656412
+ - [ENHANCE] performance
+   http://github.com/slankdev/libslankdev/commit/7b92611d3c80fa3161c637fd13234d710feafcf0
+ - [REFACT]
+   http://github.com/slankdev/libslankdev/commit/daa97e94070be66452b58ee558294ad96a8dab46
+ - [FIX] bug
+   http://github.com/slankdev/libslankdev/commit/83520f94f4e3c4e5056e84256f81675d2ba8a3b5
+
+帰宅してから家のマシンが動いてくれなかったらかなりやばいな。。
+
+---------------------------------------------------------------------------
+
+
